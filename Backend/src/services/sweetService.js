@@ -5,17 +5,19 @@ async function addSweet(sweetData) {
   return sweet;
 }
 
-module.exports = {
-  addSweet
-};
-
 
 async function deleteSweet(id) {
   const deletedSweet = await Sweet.findByIdAndDelete(id);
   return deletedSweet;
 }
 
+async function getAllSweets() {
+  return await Sweet.find();
+}
+
+
 module.exports = {
   addSweet,
-  deleteSweet
+  deleteSweet,
+  getAllSweets,
 };

@@ -7,5 +7,7 @@ router.post('/', createSweet);
 // Route to delete a sweet
 router.delete('/:id', removeSweet);
 
+router.get('/', listSweets);
+
 // Export the router
 module.exports = router;

@@ -3,7 +3,7 @@
     Each sweet should have a unique identifier (e.g., ID), name, category (e.g.. chocolate, candy, pastry), price, and quantity in stock.
 */
 const Sweets = require('../../src/models/sweetSchema.model.js');
-const { addSweet } = require('../../src/services/sweetService.js');
+const { addSweet, deleteSweet, getAllSweets } = require('../../src/services/sweetService.js');
 jest.mock('../../src/models/sweetSchema.model.js');
 
 test('addSweet should add a new sweet to the shop', async () => {
@@ -30,10 +30,6 @@ Delete Sweets:
     Users should be able to remove sweets from the shop. 
 */
 
-const Sweet = require('../../src/models/Sweet');
-const { addSweet, deleteSweet } = require('../../src/services/sweetService');
-
-jest.mock('../../src/models/Sweet');
 
 describe('deleteSweet()', () => {
   it('should delete a sweet by ID', async () => {
@@ -53,5 +49,22 @@ describe('deleteSweet()', () => {
 
     const result = await deleteSweet('nonexistent');
     expect(result).toBeNull();
+  });
+});
+
+
+describe('getAllSweets()', () => {
+  it('should return all sweets from the DB', async () => {
+    const mockSweets = [
+      { _id: '1', name: 'Ladoo', category: 'candy', price: 30, quantity: 50 },
+      { _id: '2', name: 'Barfi', category: 'pastry', price: 40, quantity: 100 }
+    ];
+
+    Sweet.find.mockResolvedValue(mockSweets);
+
+    const result = await getAllSweets();
+
+    expect(result.length).toBe(2);
+    expect(Sweet.find).toHaveBeenCalled();
   });
 });
