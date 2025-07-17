@@ -46,3 +46,25 @@ test('GET /sweets - returns all sweets', async () => {
   expect(res.body.length).toBe(2);
   expect(res.body[0].name).toBe('Ladoo');
 });
+
+describe('GET /sweets - Search and Sort', () => {
+  it('should return sweets filtered by name and sorted by price descending', async () => {
+    const mockSweets = [
+      { _id: '1', name: 'Barfi', category: 'pastry', price: 50, quantity: 100 },
+      { _id: '2', name: 'Barfi Deluxe', category: 'pastry', price: 100, quantity: 50 }
+    ];
+
+    Sweet.find.mockImplementation(() => ({
+      sort: jest.fn().mockResolvedValue(mockSweets)
+    }));
+
+    const res = await request(app).get('/sweets?name=barfi&sortBy=price&order=desc');
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(2);
+    expect(res.body[0].price).toBe(50); // Based on mock order
+    expect(Sweet.find).toHaveBeenCalledWith({
+      name: { $regex: 'barfi', $options: 'i' }
+    });
+  });
+});

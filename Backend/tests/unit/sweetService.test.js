@@ -3,7 +3,7 @@
     Each sweet should have a unique identifier (e.g., ID), name, category (e.g.. chocolate, candy, pastry), price, and quantity in stock.
 */
 const Sweets = require('../../src/models/sweetSchema.model.js');
-const { addSweet, deleteSweet, getAllSweets } = require('../../src/services/sweetService.js');
+const { addSweet, deleteSweet, getAllSweets, searchAndSortSweets  } = require('../../src/services/sweetService.js');
 jest.mock('../../src/models/sweetSchema.model.js');
 
 test('addSweet should add a new sweet to the shop', async () => {
@@ -68,3 +68,30 @@ describe('getAllSweets()', () => {
     expect(Sweet.find).toHaveBeenCalled();
   });
 });
+
+describe('searchAndSortSweets()', () => {
+  it('should search by name and sort by price descending', async () => {
+    const mockQuery = {
+      name: 'barfi',
+      sortBy: 'price',
+      order: 'desc'
+    };
+
+    const mockSweets = [
+      { _id: '1', name: 'Barfi', price: 50 },
+      { _id: '2', name: 'Barfi Deluxe', price: 100 }
+    ];
+
+    Sweet.find.mockImplementation((filter) => {
+      return {
+        sort: jest.fn().mockResolvedValue(mockSweets)
+      };
+    });
+
+    const result = await searchAndSortSweets(mockQuery);
+
+    expect(Sweet.find).toHaveBeenCalledWith({ name: { $regex: 'barfi', $options: 'i' } });
+    expect(result[0].price).toBe(50); // mock returned list
+  });
+});
+
