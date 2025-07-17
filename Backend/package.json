@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "A Sweet Shop Management System that enables users to add, update, delete, search, sort, and browse available sweets with ease.",
+  "keywords": [
+    "TDD",
+    "jest",
+    "nodejs",
+    "backend"
+  ],
+  "homepage": "https://github.com/Pooja-Batva/KATA-Sweet-Shop-Management-System#readme",
+  "bugs": {
+    "url": "https://github.com/Pooja-Batva/KATA-Sweet-Shop-Management-System/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pooja-Batva/KATA-Sweet-Shop-Management-System.git"
+  },
+  "license": "ISC",
+  "author": "Batva Pooja",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  }
+}
