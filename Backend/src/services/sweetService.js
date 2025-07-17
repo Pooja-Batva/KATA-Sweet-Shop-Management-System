@@ -8,3 +8,14 @@ async function addSweet(sweetData) {
 module.exports = {
   addSweet
 };
+
+
+async function deleteSweet(id) {
+  const deletedSweet = await Sweet.findByIdAndDelete(id);
+  return deletedSweet;
+}
+
+module.exports = {
+  addSweet,
+  deleteSweet
+};

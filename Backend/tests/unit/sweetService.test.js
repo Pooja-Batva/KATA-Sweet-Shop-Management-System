@@ -30,3 +30,28 @@ Delete Sweets:
     Users should be able to remove sweets from the shop. 
 */
 
+const Sweet = require('../../src/models/Sweet');
+const { addSweet, deleteSweet } = require('../../src/services/sweetService');
+
+jest.mock('../../src/models/Sweet');
+
+describe('deleteSweet()', () => {
+  it('should delete a sweet by ID', async () => {
+    const mockId = '123abc';
+    const mockDeleted = { _id: mockId, name: 'Ladoo' };
+
+    Sweet.findByIdAndDelete.mockResolvedValue(mockDeleted);
+
+    const result = await deleteSweet(mockId);
+
+    expect(Sweet.findByIdAndDelete).toHaveBeenCalledWith(mockId);
+    expect(result.name).toBe('Ladoo');
+  });
+
+  it('should return null if sweet not found', async () => {
+    Sweet.findByIdAndDelete.mockResolvedValue(null);
+
+    const result = await deleteSweet('nonexistent');
+    expect(result).toBeNull();
+  });
+});
