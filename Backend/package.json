@@ -18,12 +18,16 @@
   },
   "license": "ISC",
   "author": "Batva Pooja",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "devDependencies": {
     "jest": "^30.0.4"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.16.4"
   }
 }
