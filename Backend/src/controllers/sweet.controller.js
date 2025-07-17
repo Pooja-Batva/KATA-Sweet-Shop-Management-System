@@ -1,7 +1,7 @@
 // This code snippet is part of the sweet.controller.js file, which handles the creation of new sweets in the shop.
 // It uses the addSweet function from sweetService.js to add a new sweet to the database
 
-const {addSweet} = require('../../src/services/sweetService.js');
+const { addSweet, deleteSweet } = require('../services/sweetService.js');
 
 async function createSweet(req, res) {
     try {
@@ -12,14 +12,6 @@ async function createSweet(req, res) {
         res.status(500).json({ message: 'Error adding sweet', error: error.message });
     }
 }
-
-module.exports = {
-    createSweet
-};
-
-const { addSweet, deleteSweet } = require('../services/sweetService');
-
-// ... existing createSweet
 
 async function removeSweet(req, res) {
   try {
