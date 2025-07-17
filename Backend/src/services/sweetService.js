@@ -54,6 +54,17 @@ async function purchaseSweet(id, quantity) {
   return sweet;
 }
 
+async function restockSweet(id, quantity) {
+  const sweet = await Sweet.findById(id);
+  if (!sweet) throw new Error('Sweet not found');
+
+  sweet.quantity += quantity;
+  await sweet.save();
+
+  return sweet;
+}
+
+
 
 module.exports = {
   addSweet,
@@ -61,6 +72,7 @@ module.exports = {
   getAllSweets,
   purchaseSweet,
   searchAndSortSweets,
+  restockSweet,
 };
 
 // This code snippet is part of the sweetService.js file, which handles the business logic for sweets in the shop.

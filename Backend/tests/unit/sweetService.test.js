@@ -3,7 +3,7 @@
     Each sweet should have a unique identifier (e.g., ID), name, category (e.g.. chocolate, candy, pastry), price, and quantity in stock.
 */
 const Sweets = require('../../src/models/sweetSchema.model.js');
-const { addSweet, deleteSweet, getAllSweets, searchAndSortSweets  } = require('../../src/services/sweetService.js');
+const { addSweet, deleteSweet, getAllSweets, searchAndSortSweets, restockSweet  } = require('../../src/services/sweetService.js');
 jest.mock('../../src/models/sweetSchema.model.js');
 
 test('addSweet should add a new sweet to the shop', async () => {
@@ -125,5 +125,31 @@ describe('purchaseSweet()', () => {
     Sweet.findById.mockResolvedValue(null);
 
     await expect(purchaseSweet('invalidId', 2)).rejects.toThrow('Sweet not found');
+  });
+});
+
+
+describe('restockSweet()', () => {
+  it('should increase sweet quantity by given amount', async () => {
+    const mockSweet = {
+      _id: '123',
+      name: 'Kaju Katli',
+      quantity: 10,
+      save: jest.fn().mockResolvedValue({ _id: '123', name: 'Kaju Katli', quantity: 30 })
+    };
+
+    Sweet.findById.mockResolvedValue(mockSweet);
+
+    const result = await restockSweet('123', 20);
+
+    expect(Sweet.findById).toHaveBeenCalledWith('123');
+    expect(mockSweet.save).toHaveBeenCalled();
+    expect(result.quantity).toBe(30);
+  });
+
+  it('should throw error if sweet not found', async () => {
+    Sweet.findById.mockResolvedValue(null);
+
+    await expect(restockSweet('999', 10)).rejects.toThrow('Sweet not found');
   });
 });
