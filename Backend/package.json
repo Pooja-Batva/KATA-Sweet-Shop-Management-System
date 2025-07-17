@@ -18,9 +18,12 @@
   },
   "license": "ISC",
   "author": "Batva Pooja",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.0.4"
   }
 }
