@@ -40,13 +40,28 @@ async function searchAndSortSweets(query) {
   return sweets;
 }
 
+async function purchaseSweet(id, quantity) {
+  const sweet = await Sweet.findById(id);
+  if (!sweet) throw new Error('Sweet not found');
+
+  if (sweet.quantity < quantity) {
+    throw new Error('Not enough stock available');
+  }
+
+  sweet.quantity -= quantity;
+  await sweet.save();
+
+  return sweet;
+}
 
 
 module.exports = {
   addSweet,
   deleteSweet,
   getAllSweets,
-  searchAndSortSweets
+  purchaseSweet,
+  searchAndSortSweets,
 };
+
 // This code snippet is part of the sweetService.js file, which handles the business logic for sweets in the shop.
 // It includes functions to add, delete, and retrieve sweets, as well as search and sort

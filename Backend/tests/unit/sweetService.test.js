@@ -95,3 +95,35 @@ describe('searchAndSortSweets()', () => {
   });
 });
 
+describe('purchaseSweet()', () => {
+  it('should decrease stock if enough quantity available', async () => {
+    const mockSweet = {
+      _id: 'abc123',
+      name: 'Gulab Jamun',
+      quantity: 10,
+      save: jest.fn().mockResolvedValue({ _id: 'abc123', name: 'Gulab Jamun', quantity: 5 })
+    };
+
+    Sweet.findById.mockResolvedValue(mockSweet);
+
+    const result = await purchaseSweet('abc123', 5);
+
+    expect(Sweet.findById).toHaveBeenCalledWith('abc123');
+    expect(mockSweet.save).toHaveBeenCalled();
+    expect(result.quantity).toBe(5);
+  });
+
+  it('should throw error if not enough stock', async () => {
+    const mockSweet = { _id: 'abc123', name: 'Gulab Jamun', quantity: 3 };
+
+    Sweet.findById.mockResolvedValue(mockSweet);
+
+    await expect(purchaseSweet('abc123', 5)).rejects.toThrow('Not enough stock available');
+  });
+
+  it('should throw error if sweet not found', async () => {
+    Sweet.findById.mockResolvedValue(null);
+
+    await expect(purchaseSweet('invalidId', 2)).rejects.toThrow('Sweet not found');
+  });
+});
